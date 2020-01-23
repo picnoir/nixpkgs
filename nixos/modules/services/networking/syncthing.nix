@@ -497,11 +497,7 @@ in {
           RestrictNamespaces = true;
           RestrictRealtime = true;
           RestrictSUIDSGID = true;
-          CapabilityBoundingSet = [
-            "~CAP_SYS_PTRACE" "~CAP_SYS_ADMIN"
-            "~CAP_SETGID" "~CAP_SETUID" "~CAP_SETPCAP"
-            "~CAP_SYS_TIME" "~CAP_KILL"
-          ];
+          CapabilityBoundingSet = "";
         };
       };
       syncthing-init = mkIf (
