@@ -1,0 +1,30 @@
+From 9f6a5449c1db10d6124133c3ae2f442ebcc4f6b1 Mon Sep 17 00:00:00 2001
+From: Florian Klink <flokli@flokli.de>
+Date: Wed, 5 Feb 2020 21:50:15 +0100
+Subject: [PATCH] yices/Makefile: set LDCONFIG to ldconfig
+
+The Makefile inside the git submodule hardcodes LDCONFIG to
+`/sbin/ldconfig`, which doesn't necessarily exist at that path.
+
+Instead, override it to be just `ldconfig`, meaning it'll pick
+it from `$PATH`.
+---
+ src/yices/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/yices/Makefile b/src/yices/Makefile
+index c7993d7..207a299 100644
+--- a/src/yices/Makefile
++++ b/src/yices/Makefile
+@@ -9,7 +9,7 @@ VERSION = v2.6
+ all: install
+ 
+ install:
+-	$(MAKE) -C $(VERSION) install
++	$(MAKE) -C $(VERSION) install LDCONFIG=ldconfig
+ 	ln -fsT $(VERSION)/include    include
+ 	ln -fsT $(VERSION)/lib        lib
+ 	ln -fsT $(VERSION)/include_hs include_hs
+-- 
+2.25.0
+
