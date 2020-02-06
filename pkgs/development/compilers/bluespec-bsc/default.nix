@@ -56,6 +56,11 @@ in stdenv.mkDerivation rec {
 
   patches = [
     ./0001-yices-Makefile-set-LDCONFIG-to-ldconfig.patch
+    (builtins.fetchurl {
+      url = "https://patch-diff.githubusercontent.com/raw/B-Lang-org/bsc/pull/18.patch";
+      sha256 = "0s1b1y4m2nnr4q0hcayjxaavfsfg87281n54fmf5wcyj1bk9k190";
+      name = "0002-patch_ooom_TOREMOVE_BEFORE_PR";
+    })
   ];
 
   preBuild = ''
