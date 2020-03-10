@@ -603,9 +603,9 @@ let
 
       testScript = ''
         targetIPv4Table = """
-        10.0.0.0/16 proto static scope link mtu 1500 
-        192.168.1.0/24 proto kernel scope link src 192.168.1.2 
-        192.168.2.0/24 via 192.168.1.1 proto static 
+        10.0.0.0/16 proto static scope link mtu 1500
+        192.168.1.0/24 proto kernel scope link src 192.168.1.2
+        192.168.2.0/24 via 192.168.1.1 proto static
         """.strip()
 
         targetIPv6Table = """
@@ -653,6 +653,27 @@ let
             assert (
                 ipv6Residue is ""
             ), "The IPv6 routing table has not been properly cleaned:\n{}".format(ipv6Residue)
+      '';
+    };
+    # even with disabled networkd, systemd.network.links should work
+    # (as it's handled by udev, not networkd)
+    link = {
+      name = "Link";
+      nodes.client = { pkgs, ... }: with pkgs.lib; {
+        virtualisation.vlans = [ 1 ];
+        networking = {
+          useNetworkd = networkd;
+          useDHCP = false;
+        };
+        systemd.network.links."foo" = {
+          matchConfig = {
+            Name = "eth1";
+          };
+          linkConfig.MTUBytes = "1442";
+        };
+      };
+      testScript = ''
+        assert "mtu 1442" in machine.succeed("ip l show eth1");
       '';
     };
   };
