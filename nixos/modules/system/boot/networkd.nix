@@ -1060,7 +1060,7 @@ in
       environment.etc = unitFiles;
     }
 
-    mkIf config.systemd.network.enable {
+    (mkIf config.systemd.network.enable {
 
       users.users.systemd-network.group = "systemd-network";
 
@@ -1096,6 +1096,6 @@ in
       };
 
       services.resolved.enable = mkDefault true;
-    }
+    })
   ];
 }
