@@ -81,6 +81,11 @@ stdenv.mkDerivation rec {
     gappsWrapperArgs+=("--prefix" "LD_LIBRARY_PATH" ":" ${LD_LIBRARY_PATH})
   '';
 
+  # Explicitely setting up doc-dir to $out/share/doc
+  preFixup = ''
+    sed -i "s,)$, (doc-dir . \"${placeholder "out"}/share/doc/\"))," $out/etc/config.rktd
+  '';
+
   shared = if stdenv.isDarwin then "dylib" else "shared";
   configureFlags = [ "--enable-${shared}"  "--enable-lt=${libtool}/bin/libtool" ]
                    ++ stdenv.lib.optional disableDocs [ "--disable-docs" ]
