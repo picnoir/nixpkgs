@@ -3984,7 +3984,7 @@ in
   gocryptfs = callPackage ../tools/filesystems/gocryptfs { };
 
   godot = callPackage ../development/tools/godot {};
-  
+
   godot-headless = callPackage ../development/tools/godot/headless.nix { };
 
   godot-server = callPackage ../development/tools/godot/server.nix { };
@@ -4564,7 +4564,7 @@ in
 
   isync = callPackage ../tools/networking/isync { };
 
-  itm-tools = callPackage ../development/tools/misc/itm-tools { };  
+  itm-tools = callPackage ../development/tools/misc/itm-tools { };
 
   ix = callPackage ../tools/misc/ix { };
 
@@ -6028,6 +6028,8 @@ in
   pal = callPackage ../tools/misc/pal { };
 
   pandoc = callPackage ../development/tools/pandoc { };
+
+  github-backup = callPackage ../development/tools/github-backup { };
 
   pamtester = callPackage ../tools/security/pamtester { };
 
@@ -27453,7 +27455,7 @@ in
   sequeler = callPackage ../applications/misc/sequeler { };
 
   sequelpro = callPackage ../applications/misc/sequelpro {};
-  
+
   snowsql = callPackage ../applications/misc/snowsql {};
 
   sidequest = callPackage ../applications/misc/sidequest {};
