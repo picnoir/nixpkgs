@@ -140,6 +140,7 @@ stdenv.mkDerivation {
       pwd
 
       mkdir -pv $dev/include/{epan/{wmem,ftypes,dfilter},wsutil/wmem,wiretap}
+      cp ws_*.h $dev/include/
 
       cp config.h $dev/include/wireshark/
       cp ../epan/*.h $dev/include/epan/
