@@ -46,9 +46,6 @@ let
   hasDocker = config.virtualisation.docker.enable;
   hasPodman = config.virtualisation.podman.enable;
 
-  tokenXorTokenFile = instance:
-    (instance.token == null && instance.tokenFile != null) ||
-    (instance.token != null && instance.tokenFile == null);
 in
 {
   meta.maintainers = with lib.maintainers; [
@@ -82,21 +79,10 @@ in
               Base URL of your Gitea/Forgejo instance.
             '';
           };
-
-          token = mkOption {
-            type = nullOr str;
-            default = null;
-            description = ''
-              Plain token to register at the configured Gitea/Forgejo instance.
-            '';
-          };
-
           tokenFile = mkOption {
             type = nullOr (either str path);
-            default = null;
             description = ''
-              Path to an environment file, containing the `TOKEN` environment
-              variable, that holds a token to register at the configured
+              Path to file that holds a token to register at the configured
               Gitea/Forgejo instance.
             '';
           };
@@ -170,9 +156,6 @@ in
 
   config = mkIf (cfg.instances != {}) {
     assertions = [ {
-      assertion = any tokenXorTokenFile (attrValues cfg.instances);
-      message = "Instances of gitea-actions-runner can have `token` or `tokenFile`, not both.";
-    } {
       assertion = wantsContainerRuntime -> hasDocker || hasPodman;
       message = "Label configuration on gitea-actions-runner instance requires either docker or podman.";
     } ];
@@ -199,9 +182,7 @@ in
           wantedBy = [
             "multi-user.target"
           ];
-          environment = optionalAttrs (instance.token != null) {
-            TOKEN = "${instance.token}";
-          } // optionalAttrs (wantsPodman) {
+          environment = optionalAttrs (wantsPodman) {
             DOCKER_HOST = "unix:///run/podman/podman.sock";
           } // {
             HOME = "/var/lib/gitea-runner/${name}";
@@ -236,7 +217,7 @@ in
                 # perform the registration
                 ${cfg.package}/bin/act_runner register --no-interactive \
                   --instance ${escapeShellArg instance.url} \
-                  --token "$TOKEN" \
+                  --token-file $CREDENTIALS_DIRECTORY/token \
                   --name ${escapeShellArg instance.name} \
                   --labels ${escapeShellArg (concatStringsSep "," instance.labels)} \
                   --config ${configFile}
@@ -244,7 +225,6 @@ in
                 # and write back the configured labels
                 echo "$LABELS_WANTED" > "$LABELS_FILE"
               fi
-
             '')];
             ExecStart = "${cfg.package}/bin/act_runner daemon --config ${configFile}";
             SupplementaryGroups = optionals (wantsDocker) [
@@ -252,8 +232,7 @@ in
             ] ++ optionals (wantsPodman) [
               "podman"
             ];
-          } // optionalAttrs (instance.tokenFile != null) {
-            EnvironmentFile = instance.tokenFile;
+            LoadCredential = "token:${instance.tokenFile}";
           };
         };
     in mapAttrs' mkRunnerService cfg.instances;
