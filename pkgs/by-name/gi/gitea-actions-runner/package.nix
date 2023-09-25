@@ -12,13 +12,13 @@ buildGo123Module rec {
 
   src = fetchFromGitea {
     domain = "gitea.com";
-    owner = "gitea";
+    owner = "NinjaTrappeur";
     repo = "act_runner";
-    rev = "v${version}";
-    hash = "sha256-PmDa8XIe1uZ4SSrs9zh5HBmFaOuj+uuLm7jJ4O5V1dI=";
+    rev = "c7f39de3a87c5f2940e13d5f837320ee3791af6e";
+    hash = "sha256-q4WzFsCkfCHk369DWaZksBNC0v31gUahwhcLUHWqzTI=";
   };
 
-  vendorHash = "sha256-lYJFySGqkhT89vHDp1FcTiiC7DG4ziQ1DaBHLh/kXQc=";
+  vendorHash = "sha256-NoaLq5pCwTuPd9ne5LYcvJsgUXAqcfkcW3Ck2K350JE=";
 
   ldflags = [
     "-s"
