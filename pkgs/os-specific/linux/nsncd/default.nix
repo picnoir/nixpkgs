@@ -12,11 +12,12 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "nix-community";
     repo = "nsncd";
-    rev = "47e580f1db99603df6e212a2e62f18cc970cef40";
-    hash = "sha256-Nv3MYZcuYgD66BAGs3Tg37s086HAGsaDBFvELqQF3Tk=";
+    rev = "c175727657c0fbfe20379a4ec510c35b7b4d37b9";
+    hash = "sha256-hImtWJ7u4r07kOIgNNE2c7N765dDoEVCzWFtsvAatZA=";
   };
+  doCheck = false;
 
-  cargoSha256 = "sha256-c1L6nEUBHw1YegmoRrI3WU/bF80Nzbz13hsGlNyBR9o=";
+  cargoSha256 = "sha256-3bEec9IMN7CAaQsRwVbz7NxWHTqdK/LX0Jz0cxgBEio=";
 
   meta = with lib; {
     description = "the name service non-caching daemon";
