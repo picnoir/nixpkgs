@@ -646,6 +646,14 @@ def set_profile(
             remote=target_host,
             check=False,
         )
+        print("OUT")
+        print("===================")
+        print(r.stdout)
+        print("===================")
+        print("ERR")
+        print("===================")
+        print(r.stderr)
+        print("===================")
         if r.returncode:
             msg = dedent(
                 # the lowercase for the first letter below is proposital
